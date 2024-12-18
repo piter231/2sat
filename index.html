@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2-SAT Solver</title>
+</head>
+<body>
+  <h1>2-SAT Solver</h1>
+  <textarea id="input" rows="10" cols="50" placeholder="Enter clauses (e.g., 0 true 1 false)"></textarea>
+  <br>
+  <button id="solve">Solve</button>
+  <p id="output"></p>
+  <script type="module">
+    import init, { TwoSAT } from './pkg/sat.js';
+
+    async function run() {
+      await init();
+      const input = document.getElementById("input");
+      const solveButton = document.getElementById("solve");
+      const output = document.getElementById("output");
+
+      solveButton.addEventListener("click", () => {
+        const lines = input.value.trim().split("\n");
+        if (lines.length === 0) return;
+
+        const numVariables = lines.reduce((max, line) => {
+          const [v1, , v2] = line.split(" ");
+          return Math.max(max, parseInt(v1), parseInt(v2));
+        }, -1) + 1;
+
+        const solver = new TwoSAT(numVariables);
+
+        for (const line of lines) {
+          const [v1, neg1, v2, neg2] = line.split(" ");
+          solver.add_clause(parseInt(v1), neg1 === "true", parseInt(v2), neg2 === "true");
+        }
+
+        if (solver.solve()) {
+          output.textContent = `Satisfiable! Assignment: ${solver.get_assignment()}`;
+        } else {
+          output.textContent = "Unsatisfiable!";
+        }
+      });
+    }
+
+    run();
+  </script>
+</body>
+</html>
+
