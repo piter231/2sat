@@ -4,13 +4,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2-SAT Solver</title>
+  <style>
+    /* Global styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #4ca1af);
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Container styles */
+    .container {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 15px;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+      padding: 30px 50px;
+      width: 500px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #00d4ff;
+      text-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      border: 1px solid #00d4ff;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 1rem;
+      color: #333;
+      background-color: #f9f9f9;
+      resize: none;
+      margin-bottom: 20px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    button {
+      background: #00d4ff;
+      color: #ffffff;
+      font-size: 1rem;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    button:hover {
+      background: #008dbf;
+      transform: scale(1.1);
+    }
+
+    button:active {
+      transform: scale(1);
+      box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    #output {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #00ff85;
+      font-weight: bold;
+      text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+        padding: 20px 30px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      textarea {
+        height: 120px;
+      }
+
+      button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+      }
+
+      #output {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>2-SAT Solver</h1>
-  <textarea id="input" rows="10" cols="50" placeholder="Enter clauses (e.g., 0 true 1 false)"></textarea>
-  <br>
-  <button id="solve">Solve</button>
-  <p id="output"></p>
+  <div class="container">
+    <h1>2-SAT Solver</h1>
+    <textarea id="input" placeholder="Enter clauses (e.g., 0 true 1 false)"></textarea>
+    <br>
+    <button id="solve">Solve</button>
+    <p id="output"></p>
+  </div>
   <script type="module">
     import init, { TwoSAT } from './pkg/sat.js';
 

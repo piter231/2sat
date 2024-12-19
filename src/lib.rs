@@ -1,5 +1,6 @@
 use wasm_bindgen::prelude::*;
-use std::collections::VecDeque;
+use serde::{Serialize, Deserialize};
+use serde_wasm_bindgen;
 
 #[wasm_bindgen]
 pub struct TwoSAT {
@@ -12,12 +13,11 @@ pub struct TwoSAT {
 #[wasm_bindgen]
 impl TwoSAT {
     #[wasm_bindgen(constructor)]
-    pub fn new(num_variables: usize) -> TwoSAT {
+    pub fn new(num_variables: usize) -> Self {
         let adj_list = vec![vec![]; 2 * num_variables];
         let reverse_adj_list = vec![vec![]; 2 * num_variables];
         let assignment = vec![false; num_variables];
-
-        TwoSAT {
+        Self {
             num_variables,
             adj_list,
             reverse_adj_list,
@@ -25,9 +25,9 @@ impl TwoSAT {
         }
     }
 
-    pub fn add_clause(&mut self, var1: usize, negated1: bool, var2: usize, negated2: bool) {
-        let x_node = self.var_to_node(var1, negated1);
-        let y_node = self.var_to_node(var2, negated2);
+    pub fn add_clause(&mut self, x: usize, x_neg: bool, y: usize, y_neg: bool) {
+        let x_node = self.var_to_node(x, x_neg);
+        let y_node = self.var_to_node(y, y_neg);
 
         self.adj_list[x_node ^ 1].push(y_node);
         self.adj_list[y_node ^ 1].push(x_node);
@@ -64,7 +64,7 @@ impl TwoSAT {
     }
 
     pub fn get_assignment(&self) -> JsValue {
-        JsValue::from_serde(&self.assignment).unwrap()
+        serde_wasm_bindgen::to_value(&self.assignment).unwrap()
     }
 
     fn var_to_node(&self, var: usize, is_negated: bool) -> usize {
@@ -99,13 +99,7 @@ impl TwoSAT {
         let mut current_component = 0;
         visited.fill(false);
 
-        fn reverse_dfs(
-            v: usize,
-            reverse_adj_list: &Vec<Vec<usize>>,
-            visited: &mut Vec<bool>,
-            component: &mut Vec<usize>,
-            current_component: usize,
-        ) {
+        fn reverse_dfs(v: usize, reverse_adj_list: &Vec<Vec<usize>>, visited: &mut Vec<bool>, component: &mut Vec<usize>, current_component: usize) {
             visited[v] = true;
             component[v] = current_component;
             for &neighbor in &reverse_adj_list[v] {
