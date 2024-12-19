@@ -1,0 +1,15 @@
+{
+  "name": "sat",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "sat_bg.wasm",
+    "sat.js",
+    "sat.d.ts"
+  ],
+  "main": "sat.js",
+  "types": "sat.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
